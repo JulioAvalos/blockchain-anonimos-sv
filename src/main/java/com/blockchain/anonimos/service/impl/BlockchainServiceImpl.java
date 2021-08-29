@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Transactional
 @Service
@@ -46,8 +47,12 @@ public class BlockchainServiceImpl implements BlockchainService {
         Long lastProof = lastBlock.getProof();
         Long proof = BlockProofOfWorkGenerator.proofOfWork(lastProof);
 
-        // (2) - Recompenza al que mina, agregando una transaccion que otorga una moneda
-        Transaction transaction = addTransaction(sender, recipient, amount);
+        // (2) - Se crea la transaccion de recompenza al que mina
+        Transaction transaction = Transaction.builder()
+                .sender(sender)
+                .recipient(recipient)
+                .amount(amount)
+                .build();
 
         log.info(transaction.toString());
 
@@ -62,11 +67,13 @@ public class BlockchainServiceImpl implements BlockchainService {
     @Override
     public Transaction addTransaction(String sender, String recipient, BigDecimal amount) {
 
-        return Transaction.builder()
+        Transaction transaction = Transaction.builder()
                 .sender(sender)
                 .recipient(recipient)
                 .amount(amount)
                 .build();
+
+        return transactionRepository.save(transaction);
     }
 
     @Override
@@ -74,8 +81,16 @@ public class BlockchainServiceImpl implements BlockchainService {
         return Block.builder()
                 .previousHash((prevHash != null) ? prevHash : lastBlock().hash(mapper))
                 .proof(proof)
-                .timestamp(new Date().getTime())
+                .data(generateRandomImage())
+                .createdAt(new Date())
                 .build();
+    }
+
+    private String generateRandomImage() {
+        int min = 1;
+        int max = 1000;
+        int randomNum = ThreadLocalRandom.current().nextInt(min, max + 1);
+        return "https://picsum.photos/id/" + randomNum + "/100/100";
     }
 
     public Block lastBlock() {

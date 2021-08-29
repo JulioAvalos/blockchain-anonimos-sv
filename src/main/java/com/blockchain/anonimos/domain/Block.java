@@ -1,5 +1,6 @@
 package com.blockchain.anonimos.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.hash.Hashing;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 
 @Data
 @Entity
@@ -20,14 +22,14 @@ public class Block {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("block_id")
     private Long blockId;
-    private Long timestamp; // tiempo en el que fue creado
+    @JsonProperty("created_at")
+    private Date createdAt; // tiempo en el que fue creado
     private String data; // data agregada al bloque generado
+    @JsonProperty("previous_hash")
     private String previousHash; // hash del bloque anterior
     private Long proof; // valor que solo puede ser usado una sola vez
-
-    public static final Long GENESIS_BLOCK_PROOF = 100L;
-    public static final String GENESIS_BLOCK_PREV_HASH = "1";
 
     //metodo para obtener el hash del bloque
     public String hash(ObjectMapper mapper) throws JsonProcessingException {

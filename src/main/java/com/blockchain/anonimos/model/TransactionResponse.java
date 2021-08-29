@@ -1,6 +1,10 @@
 package com.blockchain.anonimos.model;
 
+import com.blockchain.anonimos.domain.Transaction;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+
+import java.util.Date;
 
 @Data
 @Builder
@@ -8,5 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransactionResponse {
-    private Long index;
+    @JsonProperty("created_at")
+    private Date createdAt;
+    private Transaction transaction;
 }

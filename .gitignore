@@ -4,6 +4,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+## variables
+
+src/main/resources/application-prod.yml
+
 ### STS ###
 .apt_generated
 .apt_generated_tests

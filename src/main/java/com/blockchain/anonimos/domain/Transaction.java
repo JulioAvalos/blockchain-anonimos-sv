@@ -1,6 +1,7 @@
 package com.blockchain.anonimos.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +24,8 @@ public class Transaction {
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "block_id", nullable = false, foreignKey = @ForeignKey(name = "FK_block_transaction"))
+    @JoinColumn(name = "block_id", nullable = true, foreignKey = @ForeignKey(name = "FK_block_transaction"))
+    @JsonProperty("block")
     private Block block; // transaccion ejecutada en el bloque
 
     @NotEmpty
