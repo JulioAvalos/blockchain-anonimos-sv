@@ -1,0 +1,25 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    #    driverClassName: com.mysql.jdbc.Driver
+    #    url: jdbc:mysql://${HOST}:${POST}/${DATABASE}
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    #    username: ${USERNAME}
+    #    password: ${PASSWORD}
+    username: sa
+    password: password
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate.ddl-auto: create
+    generate-ddl: true
+    show-sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
